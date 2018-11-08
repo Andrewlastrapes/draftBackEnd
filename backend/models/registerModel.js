@@ -7,7 +7,8 @@ const Schema = mongoose.Schema;
 
 const registerSchema = new Schema({
     username: {type: String, required: true, unique: true},
-    password: {type: String, required: true}
+    password: {type: String, required: true},
+    picks: []
 });
 
 registerSchema.plugin(uniqueValidator);

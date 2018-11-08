@@ -3,12 +3,12 @@ const router = express.Router();
 const Model = require("../models/registerModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const socketIo = require('socket.io')
+
 
 
 
 router.post("/register", (req, res) => {
-
-
 
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
@@ -63,8 +63,10 @@ router.post("/login", (req, res) => {
             console.log("token " +token);
                 res.status(200).json({
                 token: token,
-                message: "Succesful login"
-            })
+                message: "Succesful login",
+                user: fetchedUser
+            });
+     
         })
         .catch(err => {
             return res.status(401).json({
@@ -72,7 +74,6 @@ router.post("/login", (req, res) => {
             });
         });
 });
-
 
 
 router.get("/register", (req, res) => {
@@ -84,5 +85,6 @@ router.get("/register", (req, res) => {
         });
     });
 })
+
 
 module.exports = router;
