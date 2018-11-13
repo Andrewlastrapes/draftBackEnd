@@ -14,7 +14,7 @@ app.use((req, response, next) => {
     next();
 });
 
-mongoose.connect('mongodb+srv://andrewlastrapes:eCA4GAokTuUBbesq@cluster0-ssknq.mongodb.net/test?retryWrites=true', { useNewUrlParser: true })
+mongoose.connect('mongodb+srv://andrewlastrapes:hD0AmoqhP8ZN8VLN@cluster0-pl1u8.mongodb.net/test?retryWrites=true', { useNewUrlParser: true })
 .then(() => {
     console.log("connected")
 })
