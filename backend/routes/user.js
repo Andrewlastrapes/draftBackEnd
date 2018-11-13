@@ -3,7 +3,8 @@ const router = express.Router();
 const Model = require("../models/registerModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const socketIo = require('socket.io')
+const SignedInModel = require("../models/activeUsersModel");
+const socketIo = require('socket.io');
 
 
 
@@ -60,17 +61,24 @@ router.post("/login", (req, res) => {
                 "secret-this-should-be-longer",
                 { expiresIn: "1h" }
             );
-            console.log("token " +token);
-                res.status(200).json({
-                token: token,
-                message: "Succesful login",
-                user: fetchedUser
+            const signedIn = new SignedInModel({
+                username: fetchedUser.username,
+                picks: fetchedUser.picks
             });
-     
-        })
-        .catch(err => {
-            return res.status(401).json({
-                failed: messageFailed
+
+            signedIn.save()
+            .then(result => {
+                res.status(200).json({
+                    token: token,
+                    message: "Succesful login/Succesful save",
+                    user: fetchedUser,
+                    result: result
+                });
+            })
+            .catch(err => {
+                res.status(500).json({
+                    error: err
+                });
             });
         });
 });

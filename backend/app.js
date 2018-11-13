@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const postRoutes = require("./routes/posts");
 const userRoutes = require("./routes/user");
+const activeUserRoutes = require("./routes/active-users")
 
 app.use((req, response, next) => {
     response.setHeader("Access-Control-Allow-Origin", "*");
@@ -13,14 +14,8 @@ app.use((req, response, next) => {
     next();
 });
 
-
-
-
 mongoose.connect('mongodb+srv://andrewlastrapes:eCA4GAokTuUBbesq@cluster0-ssknq.mongodb.net/test?retryWrites=true', { useNewUrlParser: true })
 .then(() => {
-
-    
-    
     console.log("connected")
 })
 
@@ -30,6 +25,7 @@ app.use(bodyParser.json());
 
 app.use("/post", postRoutes);
 app.use("/user", userRoutes);
+app.use("/active-users", activeUserRoutes);
 
 
 
