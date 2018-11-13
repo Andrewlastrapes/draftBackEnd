@@ -13,8 +13,8 @@ router.post("/register", (req, res) => {
 
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
-            
-            
+
+
             const model = new Model({
                 username: req.body.username,
                 password: hash
@@ -46,10 +46,11 @@ router.post("/login", (req, res) => {
                     failed: messageFailed
                 });
             }
-       
+
+
             fetchedUser = un
             return bcrypt.compare(req.body.password, fetchedUser.password);
-            
+
         })
         .then(result => {
             if (!result) {
@@ -57,29 +58,39 @@ router.post("/login", (req, res) => {
                     failed: messageFailed
                 });
             }
-            const token = jwt.sign({email: fetchedUser.email, userId: fetchedUser._id}, 
+            const token = jwt.sign({ email: fetchedUser.email, userId: fetchedUser._id },
                 "secret-this-should-be-longer",
                 { expiresIn: "1h" }
             );
-            const signedIn = new SignedInModel({
-                username: fetchedUser.username,
-                picks: fetchedUser.picks
-            });
+            SignedInModel.findOne({ username: fetchedUser.username })
+                .then(result => {
+                    if (result) {
+                        return res.status(401).json({
+                            message: "Already signed in"
+                        })
+                    }
 
-            signedIn.save()
-            .then(result => {
-                res.status(200).json({
-                    token: token,
-                    message: "Succesful login/Succesful save",
-                    user: fetchedUser,
-                    result: result
+
+                    const signedIn = new SignedInModel({
+                        username: fetchedUser.username,
+                        picks: fetchedUser.picks
+                    });
+
+                    signedIn.save()
+                        .then(result => {
+                            res.status(200).json({
+                                token: token,
+                                message: "Succesful login/Succesful save",
+                                user: fetchedUser,
+                                result: result
+                            });
+                        })
+                        .catch(err => {
+                            res.status(500).json({
+                                error: err
+                            });
+                        });
                 });
-            })
-            .catch(err => {
-                res.status(500).json({
-                    error: err
-                });
-            });
         });
 });
 
