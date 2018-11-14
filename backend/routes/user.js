@@ -11,17 +11,30 @@ const socketIo = require('socket.io');
 
 router.post("/register", (req, res) => {
 
-    bcrypt.hash(req.body.password, 10)
+    let errorData;
+
+    if(!req.body.username){
+        return res.status(200).json({
+            err: "Type in a Username"
+        });
+    }
+    Model.findOne({username: req.body.username})
+    .then((data) => {
+        console.log(data);
+        if(data){
+           return res.status(200).json({
+              err: "Username already registered."
+                })
+        }
+        bcrypt.hash(req.body.password, 10)
         .then(hash => {
-
-
             const model = new Model({
                 username: req.body.username,
                 password: hash
             });
-
             model.save()
                 .then(result => {
+                    errorData = result;
                     res.status(201).json({
                         message: "Added",
                         data: result
@@ -29,12 +42,14 @@ router.post("/register", (req, res) => {
                 })
                 .catch(err => {
                     res.status(500).json({
-                        error: err
-                    })
-                })
+                        error: err,
+                        errorData: errorData
 
+                    });
+                });
+            });
+          });
         });
-})
 
 router.post("/login", (req, res) => {
     let messageFailed = "User not found/Password incorrect"
@@ -42,35 +57,31 @@ router.post("/login", (req, res) => {
     Model.findOne({ username: req.body.username })
         .then(un => {
             if (!un) {
-                return res.status(401).json({
+                return res.status(200).json({
                     failed: messageFailed
                 });
             }
-
-
             fetchedUser = un
             return bcrypt.compare(req.body.password, fetchedUser.password);
 
         })
         .then(result => {
             if (!result) {
-                return res.status(401).json({
+                return res.status(200).json({
                     failed: messageFailed
                 });
             }
-            const token = jwt.sign({ email: fetchedUser.email, userId: fetchedUser._id },
+            const token = jwt.sign({ username: fetchedUser.username, userId: fetchedUser._id },
                 "secret-this-should-be-longer",
                 { expiresIn: "1h" }
             );
             SignedInModel.findOne({ username: fetchedUser.username })
                 .then(result => {
                     if (result) {
-                        return res.status(401).json({
+                        return res.status(200).json({
                             message: "Already signed in"
                         })
                     }
-
-
                     const signedIn = new SignedInModel({
                         username: fetchedUser.username,
                         picks: fetchedUser.picks
