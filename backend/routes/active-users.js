@@ -12,4 +12,16 @@ router.get("", (req, res) => {
     });
 });
 
+router.post("/logout", (req, res) => {
+    console.log(req.body.username)
+    signedInModel.deleteOne({username: req.body.username})
+    .then((user) => {
+        console.log(user)
+        res.status(200).json({
+            message: "Logged out",
+            data: user
+        });
+    });
+});
+
 module.exports = router;
