@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 const activeUserSchema = new Schema({
         
         username: String,
-        picks: []
+        picks: [],
+        active: {type: Boolean}
     
 });
 

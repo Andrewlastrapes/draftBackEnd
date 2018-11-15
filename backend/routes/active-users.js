@@ -5,6 +5,7 @@ const signedInModel = require("../models/activeUsersModel");
 
 router.get("", (req, res) => {
     signedInModel.find().then((data) => {
+        console.log(data)
         res.status(200).json({
            message: "Succesful",
            users: data 

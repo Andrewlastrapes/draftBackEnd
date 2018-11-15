@@ -15,7 +15,7 @@ router.post("/register", (req, res) => {
 
     if(!req.body.username){
         return res.status(200).json({
-            err: "Type in a Username"
+            err: "Enter a username"
         });
     }
     Model.findOne({username: req.body.username})
@@ -30,12 +30,13 @@ router.post("/register", (req, res) => {
         .then(hash => {
             const model = new Model({
                 username: req.body.username,
-                password: hash
+                password: hash,
+                active: false
             });
             model.save()
                 .then(result => {
                     errorData = result;
-                    res.status(201).json({
+                    res.status(200).json({
                         message: "Added",
                         data: result
                     });
@@ -84,7 +85,8 @@ router.post("/login", (req, res) => {
                     }
                     const signedIn = new SignedInModel({
                         username: fetchedUser.username,
-                        picks: fetchedUser.picks
+                        picks: fetchedUser.picks,
+                        active: fetchedUser.active
                     });
 
                     signedIn.save()
