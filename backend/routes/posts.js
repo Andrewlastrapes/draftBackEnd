@@ -3,6 +3,8 @@ const router = express.Router();
 const Register = require("../models/registerModel");
 
 
+
+
 router.post("", (req, res) => {
 
   Register.findOneAndUpdate({username: req.body.user.username},

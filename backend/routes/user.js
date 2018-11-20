@@ -20,7 +20,6 @@ router.post("/register", (req, res) => {
     }
     Model.findOne({username: req.body.username})
     .then((data) => {
-        console.log(data);
         if(data){
            return res.status(200).json({
               err: "Username already registered."
