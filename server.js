@@ -19,8 +19,8 @@ io.on("connection", (socket) => {
         console.log(data["data"] + " connected")
     });
 
-    socket.on("playerDrafted", (data) => {
-        console.log(data)
+    socket.on("golfer-drafted", (data) => {
+        socket.emit("from-server", data)
     })
 
 })

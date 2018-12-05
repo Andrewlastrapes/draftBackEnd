@@ -7,8 +7,6 @@ const SignedInModel = require("../models/activeUsersModel");
 const socketIo = require('socket.io');
 
 
-
-
 router.post("/register", (req, res) => {
 
     let errorData;
