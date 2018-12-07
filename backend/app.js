@@ -4,7 +4,8 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const postRoutes = require("./routes/posts");
 const userRoutes = require("./routes/user");
-const activeUserRoutes = require("./routes/active-users")
+const activeUserRoutes = require("./routes/active-users");
+const golfersRoutes = require("./routes/golfers");
 
 app.use((req, response, next) => {
     response.setHeader("Access-Control-Allow-Origin", "*");
@@ -26,6 +27,7 @@ app.use(bodyParser.json());
 app.use("/post", postRoutes);
 app.use("/user", userRoutes);
 app.use("/active-users", activeUserRoutes);
+app.use("/golfers", golfersRoutes);
 
 
 
