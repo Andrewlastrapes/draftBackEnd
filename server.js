@@ -19,11 +19,13 @@ io.on("connection", (socket) => {
         console.log(data["data"] + " connected")
     });
 
-    socket.on("golfer-drafted", (data) => {
-        socket.emit("from-server", data)
-    })
+   socket.on("golferDrafted", (data) => {
+       io.sockets.emit("golferDrafted", {
+           data: data
+       });
+   });
 
-})
+});
 
 
 

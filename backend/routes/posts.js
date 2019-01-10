@@ -6,14 +6,14 @@ const Register = require("../models/registerModel");
 
 
 router.post("", (req, res) => {
-
-  Register.findOneAndUpdate({username: req.body.user.username},
-  {$push: {picks: req.body.golfer}},
-  function (error, success) {
+  Register.findOneAndUpdate({username: req.body["user"]["username"]},
+  {$push: {picks: req.body["golfer"]}},
+  function (error) {
         if (error) {
             console.log("ERRRORRRR");
         } else {
-            console.log("Succcsersrse");
+        
+            console.log(`success: ${req.body.golfer.Name}`);
         }
     });
 })
