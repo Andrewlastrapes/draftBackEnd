@@ -9,7 +9,8 @@ const registerSchema = new Schema({
     username: {type: String},
     password: {type: String},
     picks: [],
-    active: {type: Boolean}
+    active: {type: Boolean},
+    signedIn: {type: Boolean}
 });
 
 registerSchema.plugin(uniqueValidator);

@@ -18,5 +18,29 @@ router.post("", (req, res) => {
     });
 })
 
+router.post("/update-active", (req, res) => {
+
+    Register.findOneAndUpdate({active: true},
+        {active: false},
+        function (error) {
+            if(error){
+                console.log(error + "Erroorororor");
+            } else {
+                console.log("Active user updated")
+            }
+        });
+
+    console.log(req.body["user"]["username"])
+    // Register.findOneAndUpdate({username: req.body["user"]["username"]},
+    // {active: true},
+    // function (error) {
+    //     if(error){
+    //         console.log(error + "Erroorororor");
+    //     } else {
+    //         console.log("Active user updated")
+    //     }
+    // });
+});
+
 
 module.exports = router;
