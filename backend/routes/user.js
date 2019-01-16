@@ -110,12 +110,10 @@ router.get("/register", (req, res) => {
 router.get("/get-users", (req, res) => {
     let signedInUsers = []
     Model.find().then(data => {
-        console.log("Model find" + data)
         data.filter((user) => {
             if (user["signedIn"] === true) {
                 signedInUsers.push(user)
             }
-            console.log("signed in users" + signedInUsers)
         })
         res.status(200).json({
             data: signedInUsers
@@ -123,44 +121,67 @@ router.get("/get-users", (req, res) => {
     })
 })
 
+
+router.post("/set-initial-user", (req, res) => {
+    updateNewActiveUser(req.body.username, res)
+})
+
 router.post("/set-active-user", (req, res) => {
+
+    console.log(req.body)
+    console.log("Active user" + req.body.username)
+    console.log("Active User" + req.body.u)
 
     Model.findOneAndUpdate(
         { active: true },
-        { active: false }
-    ),
-        (error) => {
-            if (error) {
-                console.log(error)
+        { active: false },
+        {new: true},
+        (err, doc) => {
+            if(err){
+                console.log("error line 134 user.js")
             } else {
-                Model.findOneAndUpdate(
-                    { username: req.body.username },
-                    { active: true },
-                    (data, error) => {
-                        if (error) {
-                            console.log("error")
-                        } else {
-                            res.status(200).json({
-                                data: data
-                            });
-                            console.log("activated user")
-                        }
-                    });
+                console.log(doc)
+                updateNewActiveUser(req.body.username, res)
             }
         }
+    )
+        
+           
+    });
 
-
-});
+     updateNewActiveUser = (username, res) => {
+        Model.findOneAndUpdate(
+            { username: username },
+            { active: true }, {new: true}, (err, data1) => {
+                if(err){
+                    console.log(err)
+                } else {
+                    console.log("second findOneAndUpdate" + data1)
+                    res.status(200).json({
+                        data: data1
+                    })
+                }
+            });
+    }   
+        
 
     router.get("/get-active-user", (req, res) => {
-        Model.findOne({
-            active:true
-        }).then(data => {
-            res.status(200).json({
-                data: data
-            })
-        })
-    })
+        Model.findOne(
+        {active:true},
+        (err, data) => {
+            if(err){
+                console.log("error in get active user")
+            } else {
+                console.log("data from get active user: " +data)
+                res.status(200).json({
+                   data: data
+               });
+            }
+           
+        });
+    });
+        
+      
 
 
 

@@ -16,7 +16,8 @@ io.on("connection", (socket) => {
     console.log("io from server")
     socket.emit("news", {hello: user.username})
     socket.on("newConnection", (data) => {
-        console.log(data["data"] + " connected")
+        console.log(data["data"] + " connected");
+        
     });
 
    socket.on("golferDrafted", (data) => {
@@ -24,6 +25,12 @@ io.on("connection", (socket) => {
            data: data
        });
    });
+
+   socket.on("initialActiveUser", (data) => {
+       io.sockets.emit("initiate", {
+           data: data
+       })
+   })
 
 });
 
