@@ -31,7 +31,6 @@ router.get("/post", (req, res) => {
 
 
 router.post("/remove-drafted", (req, res) => {
-    console.log(req.body.Name)
     Golfers.deleteOne({Name: req.body.Name})
     .then((user) => {
         res.status(200).json({

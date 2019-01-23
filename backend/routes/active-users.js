@@ -13,7 +13,6 @@ router.get("", (req, res) => {
 });
 
 router.post("/logout", (req, res) => {
-    console.log("hi")
     signedInModel.deleteOne({username: req.body.username})
     .then((user) => {
         res.status(200).json({
