@@ -7,14 +7,15 @@ const Turn = require("../models/turnModel");
 
 
 router.post("", (req, res) => {
-    console.log("is this the culprit" + req.body["user"])
     Register.findOneAndUpdate({ username: req.body["user"]["username"] },
-        { $push: { picks: req.body["golfer"] } },
+        { $push: { picks: req.body["golfer"]["Name"] } },
         function (error) {
             if (error) {
                 console.log("ERRRORRRR");
             } else {
-
+                res.status(200).json({
+                    message: "Post golfer"
+                });
                 console.log(`success: ${req.body.golfer.Name}`);
             }
         });
@@ -26,6 +27,9 @@ router.post("/initate-turn", (req, res) => {
         turn: true
     })
     turn.save()
+    res.status(200).json({
+        message: "Initiate turn"
+    })
 })
 
 
@@ -45,7 +49,9 @@ router.post("/update-turn", (req, res) => {
         Turn.findOneAndUpdate({ turn: true },
             { turn: false },
             function (error, data) {
-                console.log(data)
+                res.status(200).json({
+                    message: "Update turn"
+                })
             });
     }  
 
@@ -67,6 +73,9 @@ router.post("/update-active", (req, res) => {
             if (error) {
                 console.log(error + "Erroorororor");
             } else {
+                res.status(200).json({
+                    message: "Find one and update"
+                })
                 console.log("Active user updated")
             }
         });

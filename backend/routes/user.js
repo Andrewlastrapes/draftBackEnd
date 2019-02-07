@@ -126,11 +126,7 @@ router.post("/set-initial-user", (req, res) => {
     updateNewActiveUser(req.body.username, res)
 })
 
-router.post("/set-active-user", (req, res) => {
-
-    console.log(req.body)
-    console.log("Active user" + req.body.username)
-    console.log("Active User" + req.body.u)
+router.post("/set-active-user", (req, res, next) => {
 
     Model.findOneAndUpdate(
         { active: true },
@@ -140,25 +136,22 @@ router.post("/set-active-user", (req, res) => {
             if(err){
                 console.log("error line 134 user.js")
             } else {
-                console.log(doc)
-                updateNewActiveUser(req.body.username, res)
+                 updateNewActiveUser(req.body.username, res)
             }
         }
     )
-        
-           
     });
 
-     updateNewActiveUser = (username, res) => {
+      updateNewActiveUser = (username, res) => {
         Model.findOneAndUpdate(
             { username: username },
             { active: true }, {new: true}, (err, data1) => {
                 if(err){
                     console.log(err)
                 } else {
-                    console.log("second findOneAndUpdate" + data1)
                     res.status(200).json({
-                        data: data1
+                        data: data1,
+                        message: "This is coming from this function"
                     })
                 }
             });
@@ -180,6 +173,19 @@ router.post("/set-active-user", (req, res) => {
            
         });
     });
+
+
+    // router.post("/sign-out", (req, res) => {
+    //     Model.findOneAndUpdate({username: req.body.username},
+    //         {signedIn: false},
+    //         (err, data) => {
+    //             if(err){
+    //                 console.log(err)
+    //             } else {
+    //                 console.log(data)
+    //             }
+    //         })
+    // })
         
       
 
