@@ -32,6 +32,12 @@ io.on("connection", (socket) => {
        })
    })
 
+   socket.on("updateUsers", users => {
+       io.sockets.emit("updateUsers", {
+           users: users
+       })
+   })
+
 });
 
 
