@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Register = require("../models/registerModel");
 const Turn = require("../models/turnModel");
+const Complete = require("../models/draftComplete");
 
 
 
@@ -81,6 +82,34 @@ router.post("/update-active", (req, res) => {
         });
 
 });
+
+router.post("/draft-started", (req, res) => {
+    const draft = new Complete({
+        complete: false
+    })
+    draft.save()
+})
+
+
+
+
+router.post("/draft-completed", (req, res) => {
+    Complete.findOneAndUpdate({complete: false},
+        {complete: true}).then(data => {
+            res.status(200).json({
+                data: data
+            })
+        })
+})
+
+router.get("/draft-completed", (req, res) => {
+    Complete.find().then(data => {
+        res.status(200).json({
+            status: data
+        })
+    })
+})
+
 
 
 module.exports = router;

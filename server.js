@@ -36,6 +36,12 @@ io.on("connection", (socket) => {
        io.sockets.emit("updateUsers", {
            users: users
        })
+   });
+
+   socket.on("messageOut", data => {
+        io.sockets.emit("messageIn", {
+            data: data
+        })
    })
 
 });
