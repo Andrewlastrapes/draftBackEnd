@@ -44,6 +44,10 @@ io.on("connection", (socket) => {
         })
    })
 
+   socket.on("beginDraft", () => {
+       io.sockets.emit("begin")
+   })
+
 });
 
 

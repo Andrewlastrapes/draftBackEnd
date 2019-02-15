@@ -43,7 +43,9 @@ router.post("/update-turn", (req, res) => {
         Turn.findOneAndUpdate({ turn: false },
             { turn: true },
             function (error, data) {
-                console.log(data)
+                res.status(200).json({
+                    data: "a"
+                })
             });
     } else {
         console.log("in false block")
@@ -88,6 +90,9 @@ router.post("/draft-started", (req, res) => {
         complete: false
     })
     draft.save()
+    res.status(200).json({
+        data: "success"
+    })
 })
 
 
