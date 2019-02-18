@@ -3,11 +3,12 @@ const app = require("./backend/app")
 const http = require('http');
 const server = http.createServer(app)
 const socketIo = require('socket.io')
-const user = require("./backend/routes/user")
+const user = require("./backend/routes/user");
+const port = process.env.PORT || 3010
 
 
-server.listen(3010, () => {
-    console.log("Listening")
+server.listen(port, () => {
+    console.log("Listening on port" + port)
 })
 
 const io = socketIo(server)

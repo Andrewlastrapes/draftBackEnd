@@ -5,6 +5,10 @@ const mongoose = require("mongoose");
 const postRoutes = require("./routes/posts");
 const userRoutes = require("./routes/user");
 const golfersRoutes = require("./routes/golfers");
+const path = require("path");
+
+
+app.use("/", express.static(path.join(__dirname, "angular")));
 
 app.use((req, response, next) => {
     response.setHeader("Access-Control-Allow-Origin", "*");
@@ -22,10 +26,13 @@ mongoose.connect('mongodb+srv://andrewlastrapes:hD0AmoqhP8ZN8VLN@cluster0-pl1u8.
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+ 
 app.use("/post", postRoutes);
 app.use("/user", userRoutes);
 app.use("/golfers", golfersRoutes);
+app.use((req, res) => {
+    res.sendFile(path.join(__dirname, "angular", "index.html"))
+});
 
 
 
