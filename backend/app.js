@@ -18,9 +18,9 @@ app.use((req, response, next) => {
     next();
 });
 
-mongoose.connect('mongodb+srv://andrewlastrapes:hD0AmoqhP8ZN8VLN@cluster0-pl1u8.mongodb.net/test?retryWrites=true', { useNewUrlParser: true })
+mongoose.connect('mongodb://andrewlastrapes:MastersDraft!1@ds119930.mlab.com:19930/masters-draft', { useNewUrlParser: true })
 .then(() => {
-    console.log("connected")
+    console.log("connected to mlab")
 })
 
 
